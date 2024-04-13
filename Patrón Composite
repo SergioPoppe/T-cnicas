@@ -1,0 +1,86 @@
+from abc import ABC, abstractmethod
+
+class ComponenteUniversidad(ABC):
+    @abstractmethod
+    def calcular_nomina(self):
+        pass
+
+class Profesor(ComponenteUniversidad):
+    def __init__(self, nombre, np, horas_trabajadas, precio_hora):
+        self.nombre = nombre
+        self.np = np
+        self.horas_trabajadas = horas_trabajadas
+        self.precio_hora = precio_hora
+
+    def calcular_nomina(self):
+        return self.horas_trabajadas * self.precio_hora
+
+class UnidadOrganizativa(ComponenteUniversidad):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.componentes = []
+
+    def agregar_componente(self, componente):
+        self.componentes.append(componente)
+
+    def quitar_componente(self, componente):
+        self.componentes.remove(componente)
+
+    def calcular_nomina(self):
+        total_nomina = 0
+        for componente in self.componentes:
+            total_nomina += componente.calcular_nomina()
+        return total_nomina
+
+class Facultad(UnidadOrganizativa):
+    def __init__(self, nombre, complemento):
+        super().__init__(nombre)
+        self.complemento = complemento
+
+    def calcular_nomina(self):
+        nomina_facultad = super().calcular_nomina()
+        return nomina_facultad * (1 + self.complemento / 100)
+
+class Universidad(UnidadOrganizativa):
+    def __init__(self, nombre):
+        super().__init__(nombre)
+
+    def calcular_nomina(self):
+        return super().calcular_nomina()
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Crear profesores
+    profesor1 = Profesor("Juan Perez", "NP001", 40, 50)
+    profesor2 = Profesor("Maria Rodriguez", "NP002", 30, 60)
+
+    # Crear departamentos
+    departamento1 = UnidadOrganizativa("Departamento de Matemáticas")
+    departamento1.agregar_componente(profesor1)
+    departamento1.agregar_componente(profesor2)
+
+    # Crear facultad
+    facultad1 = Facultad("Facultad de Ciencias", 10)
+    facultad1.agregar_componente(departamento1)
+
+    # Crear universidad
+    universidad = Universidad("Mi Universidad")
+    universidad.agregar_componente(facultad1)
+
+    # Calcular nómina total
+    nomina_total = universidad.calcular_nomina()
+    print("Nómina total de la universidad:", nomina_total)
+
+    # Calcular nómina por facultad
+    nomina_facultad = facultad1.calcular_nomina()
+    print("Nómina total de la facultad:", nomina_facultad)
+
+    # Calcular nómina por departamento
+    nomina_departamento = departamento1.calcular_nomina()
+    print("Nómina total del departamento:", nomina_departamento)
+
+    # Calcular nómina por profesor
+    nomina_profesor1 = profesor1.calcular_nomina()
+    nomina_profesor2 = profesor2.calcular_nomina()
+    print("Nómina del profesor Juan Perez:", nomina_profesor1)
+    print("Nómina de la profesora Maria Rodriguez:", nomina_profesor2)
