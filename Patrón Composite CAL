@@ -1,0 +1,73 @@
+from abc import ABC, abstractmethod
+
+class ComponenteAsignatura(ABC):
+    @abstractmethod
+    def calcular_calificacion(self):
+        pass
+
+class Actividad(ComponenteAsignatura):
+    def __init__(self, nombre, peso):
+        self.nombre = nombre
+        self.peso = peso
+
+    def calcular_calificacion(self):
+        # Se asume que cada actividad tiene una calificación dada
+        # En un sistema real, este método se implementaría según el caso
+        return 0
+
+class Asignatura(ComponenteAsignatura):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.actividades = []
+
+    def agregar_actividad(self, actividad):
+        self.actividades.append(actividad)
+
+    def quitar_actividad(self, actividad):
+        self.actividades.remove(actividad)
+
+    def calcular_calificacion(self):
+        calificacion_total = 0
+        for actividad in self.actividades:
+            calificacion_total += actividad.calcular_calificacion() * (actividad.peso / 100)
+        return calificacion_total
+
+# Crear actividades para Técnicas de Programación
+examen_parcial = Actividad("Examen Parcial", 40)
+proyecto_cuatrimestral = Actividad("Proyecto Cuatrimestral", 30)
+tareas_semanales = [Actividad(f"Tarea Semana {i+1}", 3) for i in range(10)]
+
+# Crear asignatura de Técnicas de Programación
+tecnicas_programacion = Asignatura("Técnicas de Programación")
+tecnicas_programacion.agregar_actividad(examen_parcial)
+tecnicas_programacion.agregar_actividad(proyecto_cuatrimestral)
+for tarea in tareas_semanales:
+    tecnicas_programacion.agregar_actividad(tarea)
+
+# Crear actividades para Bases de Datos
+trabajo_final = Actividad("Trabajo Final", 50)
+examen_final_bbdd = Actividad("Examen Final", 50)
+
+# Crear asignatura de Bases de Datos
+bbdd = Asignatura("Bases de Datos")
+bbdd.agregar_actividad(trabajo_final)
+bbdd.agregar_actividad(examen_final_bbdd)
+
+# Crear actividades para Sistemas Operativos
+laboratorio = [Actividad(f"Laboratorio {i+1}", 10) for i in range(4)]
+examen_final_so = Actividad("Examen Final", 60)
+
+# Crear asignatura de Sistemas Operativos
+ssoo = Asignatura("Sistemas Operativos")
+for sesion in laboratorio:
+    ssoo.agregar_actividad(sesion)
+ssoo.agregar_actividad(examen_final_so)
+
+# Calcular calificaciones
+calificacion_tecnicas_programacion = tecnicas_programacion.calcular_calificacion()
+calificacion_bbdd = bbdd.calcular_calificacion()
+calificacion_ssoo = ssoo.calcular_calificacion()
+
+print("Calificación Técnicas de Programación:", calificacion_tecnicas_programacion)
+print("Calificación Bases de Datos:", calificacion_bbdd)
+print("Calificación Sistemas Operativos:", calificacion_ssoo)
