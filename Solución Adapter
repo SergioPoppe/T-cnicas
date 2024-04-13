@@ -1,0 +1,31 @@
+Definición de Interfaces:
+
+
+IDocumentoTexto: Esta interfaz incluirá los métodos abrirTxt(), guardarTxt(), y modificarTxt().
+IDocumentoPDF: Esta interfaz incluirá los métodos abrirPDF(), guardarPDF(), y modificarPDF().
+
+
+Implementación de Clases Concretas:
+
+
+DocumentoTexto: Implementa la interfaz IDocumentoTexto.
+DocumentoPDF: Implementa la interfaz IDocumentoPDF.
+
+
+Creación del Adaptador:
+
+
+DocumentoPDFAdapter: Esta clase implementará la interfaz IDocumentoTexto y tendrá una referencia a un objeto de DocumentoPDF.
+Dentro de cada método de DocumentoPDFAdapter, se llamará al método correspondiente del objeto DocumentoPDF. Por ejemplo, abrirTxt() llamará a abrirPDF(), guardarTxt() a guardarPDF(), y modificarTxt() a modificarPDF().
+
+
+Integración en el Sistema:
+
+
+Cuando el sistema que maneja documentos de texto necesite interactuar con documentos PDF, utilizará DocumentoPDFAdapter. Esto permitirá que el sistema maneje documentos PDF como si fueran documentos de texto, proporcionando una integración transparente y efectiva.
+
+
+Conclusión: 
+
+
+El uso del patrón Adapter es una solución efectiva para este problema de incompatibilidad de interfaces. Permite la integración de sistemas con mínimas modificaciones en el código existente, facilitando la mantenibilidad y escalabilidad del sistema.
